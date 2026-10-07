@@ -199,10 +199,4 @@
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
-   limitations under the License.
-   
-
-   THIRD-PARTY LIBRARIES
-
-   This product bundles Apache Log4j 2 for Java version 2.18.0, which is available under a "Apache 2.0" license.
-   For details, see https://github.com/apache/logging-log4j2/blob/2.x/LICENSE.txt
+   limitations under the License.s
