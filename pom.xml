@@ -6,7 +6,7 @@
   <artifactId>TaskShell</artifactId>
   <version>0.0.2</version>
 
- <build>
+  <build>
     <!-- Compiler -->
     <plugins>
       <plugin>
