@@ -12,7 +12,7 @@ Run
 -----
 This project cannot be executed because it's a Task Process plugin for Elius Virtual Operator.
 
-Please copy the jar file under *tasks* directory and properties files under *resources*.
+Please copy the jar file under *tasks* directory.
 
 
 
