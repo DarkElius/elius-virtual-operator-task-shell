@@ -62,9 +62,9 @@ public class ShellProcess implements TaskProcess {
 	public void execute(Task task) {
 		// Application properties
 		appProperties = PropertiesManagerFactory.getInstance(ShellAttributes.DEFAULT_SHELL_PROPERTIES_FILE);
-		
+
 		// Load shell properties
-		if(appProperties.isLoaded()) {
+		if(!appProperties.isLoaded()) {
 			// Set error
 			tStatus = TaskStatus.ERROR;
 			// Set error message
@@ -87,6 +87,9 @@ public class ShellProcess implements TaskProcess {
 		// Process Builder instance
 		ProcessBuilder builder = new ProcessBuilder();
 		
+		logger.debug("windows "+ isWindows);
+		logger.debug("fff " + pathScripts + "/" + task.getDetails());
+
 		// Set command with the right settings
 		if (isWindows) {
 			// Set command for windows
