@@ -28,6 +28,11 @@ import elius.virtualoperator.task.TaskProcess;
 import elius.virtualoperator.task.TaskStatus;
 
 
+/**
+ * ShellProcess.
+ * <p>
+ * Task that execute a shell.
+ */
 public class ShellProcess implements TaskProcess {
 	
 	// Get logger
@@ -60,6 +65,9 @@ public class ShellProcess implements TaskProcess {
 	
 	@Override
 	public void execute(Task task) {
+
+		logger.traceEntry("task={}", task);
+
 		// Application properties
 		appProperties = PropertiesManagerFactory.getInstance(ShellAttributes.DEFAULT_SHELL_PROPERTIES_FILE);
 
@@ -86,9 +94,6 @@ public class ShellProcess implements TaskProcess {
 
 		// Process Builder instance
 		ProcessBuilder builder = new ProcessBuilder();
-		
-		logger.debug("windows "+ isWindows);
-		logger.debug("fff " + pathScripts + "/" + task.getDetails());
 
 		// Set command with the right settings
 		if (isWindows) {
@@ -143,6 +148,7 @@ public class ShellProcess implements TaskProcess {
 			tStatus = TaskStatus.ERROR;
 		}
 		
+		logger.traceExit("status={}", tStatus);
 	}
 
 	

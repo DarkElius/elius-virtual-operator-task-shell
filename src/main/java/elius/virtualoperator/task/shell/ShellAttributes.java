@@ -14,15 +14,20 @@
 
 package elius.virtualoperator.task.shell;
 
+/**
+ * ShellAttributes.
+ * <p>
+ * Application attributes.
+ */
 public class ShellAttributes {
 	
-	// Default - Application properties file
+	/** Default - Application properties file */
 	public static final String DEFAULT_SHELL_PROPERTIES_FILE = "evo-shell.properties";
 	
 	
-	// Properties - Path where scripts stored
+	/** Properties - Path where scripts stored */
 	public static final String PROP_TASK_SHELL_SCRIPTS_PATH = "task.shell.scripts.path";
 	
-	// Properties - Path where scripts are executed (working directory)
+	/** Properties - Path where scripts are executed (working directory) */
 	public static final String PROP_TASK_SHELL_WORK_PATH = "task.shell.work.path";	
 }
