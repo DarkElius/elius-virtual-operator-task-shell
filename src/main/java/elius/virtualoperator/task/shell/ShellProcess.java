@@ -17,6 +17,7 @@ package elius.virtualoperator.task.shell;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,15 +39,19 @@ public class ShellProcess implements TaskProcess {
 	// Get logger
 	private static Logger logger = LogManager.getLogger(ShellProcess.class);
 	
-	// Property file
-	private PropertiesManager appProperties;
-	
 	// Process Result
 	private String pResult;
 	
 	// Task Status
 	private TaskStatus tStatus;
 	
+	/**
+	 * Constructor
+	 */
+	public ShellProcess() {
+        super();
+    }
+
 	@Override
     public String getName() {
         return "EVO_SHELL";
@@ -69,7 +74,7 @@ public class ShellProcess implements TaskProcess {
 		logger.traceEntry("task={}", task);
 
 		// Application properties
-		appProperties = PropertiesManagerFactory.getInstance(ShellAttributes.DEFAULT_SHELL_PROPERTIES_FILE);
+		PropertiesManager appProperties = PropertiesManagerFactory.getInstance(ShellAttributes.DEFAULT_SHELL_PROPERTIES_FILE);
 
 		// Load shell properties
 		if(!appProperties.isLoaded()) {
@@ -95,13 +100,17 @@ public class ShellProcess implements TaskProcess {
 		// Process Builder instance
 		ProcessBuilder builder = new ProcessBuilder();
 
+
+		// Create script path
+		Path scriptPath = Path.of(pathScripts, task.getDetails());
+
 		// Set command with the right settings
 		if (isWindows) {
 			// Set command for windows
-			builder.command("cmd.exe", "/c", "dir");
+			builder.command("C:\\Windows\\System32\\cmd.exe", "/c", scriptPath.toString());
 		} else {
 			// Set command on nix systems
-			builder.command("sh", "-c", pathScripts + "/" + task.getDetails());
+			builder.command("/bin/sh", "-c", scriptPath.toString());
 		}
 
 		// Set working directory
@@ -122,7 +131,7 @@ public class ShellProcess implements TaskProcess {
 			String line;
 			// Concatenate output to one string
 			while ((line = reader.readLine()) != null) {
-				output.append(line + "\n");
+				output.append(line).append("\n");
 			}
 	
 			// Wait for the end and set the exit code
@@ -140,12 +149,16 @@ public class ShellProcess implements TaskProcess {
 
 
 		} catch (Exception e) {
-			// Log the error
-			logger.error(e.getMessage());
 			// Set result
 			pResult = "Generic error, check system log";
+			// Log the error
+			logger.error(pResult, e.getMessage(), e);
+
 			// Set task error code
 			tStatus = TaskStatus.ERROR;
+			
+			// Clean up whatever needs to be handled before interrupting
+    		Thread.currentThread().interrupt();
 		}
 		
 		logger.traceExit("status={}", tStatus);

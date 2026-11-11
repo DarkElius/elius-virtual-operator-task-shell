@@ -30,4 +30,11 @@ public class ShellAttributes {
 	
 	/** Properties - Path where scripts are executed (working directory) */
 	public static final String PROP_TASK_SHELL_WORK_PATH = "task.shell.work.path";	
+
+
+	/**
+	 * Constructor
+	 */
+	private ShellAttributes() {
+	}
 }
