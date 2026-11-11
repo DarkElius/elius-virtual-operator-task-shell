@@ -71,7 +71,7 @@ public class ShellProcess implements TaskProcess {
 	@Override
 	public void execute(Task task) {
 
-		logger.traceEntry("task={}", task);
+		logger.traceEntry("task={}", task.toString());
 
 		// Application properties
 		PropertiesManager appProperties = PropertiesManagerFactory.getInstance(ShellAttributes.DEFAULT_SHELL_PROPERTIES_FILE);
