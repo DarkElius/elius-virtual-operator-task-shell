@@ -117,48 +117,44 @@ public class ShellProcess implements TaskProcess {
 		builder.directory(new File(pathWork));
 		
 		try {
+			// Redirect standard error to standard output
+			builder.redirectErrorStream(true);
 			
-			// Create process
+			// Create the process
 			Process process = builder.start();
 
-			// Initialize output catcher
 			StringBuilder output = new StringBuilder();
 
-			// Get output from process
-			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-			// Final output string
-			String line;
-			// Concatenate output to one string
-			while ((line = reader.readLine()) != null) {
-				output.append(line).append("\n");
+			// Read output
+			try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+				String line;
+				while ((line = reader.readLine()) != null) {
+					output.append(line).append("\n");
+				}
 			}
-	
-			// Wait for the end and set the exit code
+
+			// Wait for exit code
 			int exitCode = process.waitFor(); 
 			
-			// Redirect script output to task result
+			// Assign the oputput
 			pResult = output.toString();
 
-			
-			// Set the correct task exit code
-			if (0 == exitCode)
+			// Set exit code
+			if (0 == exitCode) {
 				tStatus = TaskStatus.ENDED;
-			else
+			} else {
 				tStatus = TaskStatus.ERROR;
 
+				if (pResult.isEmpty()) {
+					pResult = "Process failed with exit code " + exitCode;
+				}
+			}
 
 		} catch (Exception e) {
-			// Set result
-			pResult = "Generic error, check system log";
-			// Log the error
-			logger.error(pResult, e.getMessage(), e);
-
-			// Set task error code
+			pResult = "Generic error, check system log: " + e.getMessage();
+			logger.error(pResult, e);
 			tStatus = TaskStatus.ERROR;
-			
-			// Clean up whatever needs to be handled before interrupting
-    		Thread.currentThread().interrupt();
+			Thread.currentThread().interrupt();
 		}
 		
 		logger.traceExit("status={}", tStatus);
